@@ -66,3 +66,34 @@ helm install monitoring prometheus-community/kube-prometheus-stack -n monitoring
 ```
 
 ![image](images/Screenshot%202023-04-25%20at%209.27.39%20am.png)
+
+###### Step 4: Forward-port to Prometheus UI
+
+```
+kubectl port-forward service/monitoring-kube-prometheus-prometheus -n monitoring 9090:9090 &
+```
+
+![image](images/Screenshot%202023-04-25%20at%2011.00.16%20am.png)
+
+###### Step 5: Forward-port to Grafana UI
+
+```
+kubectl port-forward service/monitoring-grafana 8080:80 -n monitoring &
+```
+
+![image](images/Screenshot%202023-04-25%20at%2011.02.09%20am.png)
+![image](images/Screenshot%202023-04-25%20at%2010.19.02%20am.png)
+
+###### Step 6: Simulate a request to microservices front-end to see the Grafana UI
+
+#Create a test pod inside the cluster to send requests to front-end pod
+
+```
+kubectl run curl-test --image=radial/busyboxplus:curl -i --ty --rm
+```
+
+#Write a test.sh to send 100000 requests to front-end pod endpoint
+![image](images/FireShot%20Capture%20028%20-%204%20-%20Introduction%20to%20Grafana%20-%2023_25%20-%2011_11_%20-%20techworld-with-nana.teachable.com.png)
+
+#The output of Grafana
+![image](images/Screenshot%202023-04-25%20at%2011.07.13%20am.png)
